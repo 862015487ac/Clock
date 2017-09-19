@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>时钟</title>
+</head>
+<script>
+    var context;
+    var h = screen.availHeight;
+    var w = screen.availWidth;
+    var r = 200;
+    var pi = Math.PI;
+
+    //绘制时间面板
+    function drawcolck() {
+        var canvac = document.getElementById("colck");
+        canvac.width = w;
+        canvac.height = h;
+        context = canvac.getContext("2d");
+
+        context.translate(w / 2, h / 2);//重新定义坐标
+        context.beginPath();
+        //画圆
+        context.save();
+        context.arc(0, 0, r, 0, 2 * pi, true);
+        context.lineWidth = "10";
+
+        //绘制数字
+        context.font = "bold 24px 宋体";
+        context.textAlign = "center";
+        context.fillText("12", 0, -r + 38);
+        context.fillText("9", -r + 35, 8);
+        context.fillText("6", 0, r - 35 + 8);
+        context.fillText("3", r - 35, 8);
+
+        context.stroke();
+
+        //绘制刻度
+        drawScale("3", 12, 15);
+        drawScale("2", 60, 10);
+        context.restore();
+        drawTime();
+    }
+
+    //绘制刻度的方法
+    function drawScale(width, count, length) {
+        context.beginPath();
+        context.lineWidth = width;
+        for (var i = 0; i < count; i++) {
+            context.moveTo(0, 0 - r + 5);
+            context.lineTo(0, 0 - r + 5 + length);
+            context.rotate(2 * pi / count);
+        }
+        context.stroke();
+    }
+
+    //绘制指针函数
+    function drawTimeLine(width, color, lenth, radian) {
+
+        context.beginPath();
+        context.lineWidth = width;
+        context.strokeStyle = color;
+        context.moveTo(0, 0);
+        context.lineTo((r - lenth) * Math.cos(radian), (r - lenth) * Math.sin(radian));
+        context.stroke();
+    }
+
+    //显示时间
+    function drawTime() {
+        var date=new Date();
+        var z=date.getSeconds();
+        var y=date.getMinutes();
+        var x=date.getHours();
+
+        //清除上一帧；
+        context.beginPath();
+        context.arc(0, 0, 155, 0, 2 * pi, false);
+        context.fillStyle="white";
+        context.fill();
+
+        //时针
+        drawTimeLine("6","black",80,-pi/2+x*pi/6+y*pi/360);
+        drawTimeLine("6","black",170,-pi/2+x*pi/6+y*pi/360+pi);
+        //分针
+        drawTimeLine("4","blue",55,-pi/2+y*pi/30+z*pi/1800);
+        drawTimeLine("4","blue",180,-pi/2+y*pi/30+z*pi/1800+pi);
+        //圆点
+        context.beginPath();
+        context.arc(0,0,5,0,2*pi,false);
+        context.lineWidth="10";
+        context.strokeStyle="black";
+        context.stroke();
+        //秒针
+        drawTimeLine("2","red",45,-pi/2+z*pi/30);
+        drawTimeLine("2","red",185,-pi/2+z*pi/30+pi);
+
+        setTimeout("drawTime()",1000);
+    }
+
+    window.onload = drawcolck;
+</script>
+<body>
+<canvas id="colck">时钟</canvas>
+</body>
+</html>
