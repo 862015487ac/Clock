@@ -1,0 +1,14 @@
+.wh {
+    width: 80px;
+    height: 30px;
+    position: absolute;
+    left: 600px;
+}
+#message{
+    color:#0303ff;
+    position:absolute;
+}
+#message2{
+    color: #ff0000;
+    position:absolute;
+}
