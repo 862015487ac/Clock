@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>直线电机</title>
+
+    <script>
+        var context;
+        var x;
+        var y;
+        var o=0;
+        function draw() {
+            var canvas=document.getElementById("canvas");
+            context=canvas.getContext("2d");
+            context.translate(400, 300);
+            dian();
+        }
+        function dian() {
+            o+=Math.PI/180;
+            x=90*Math.cos(o);
+            y=90*Math.sin(o);
+
+            context.clearRect(-100,-100,600,600);
+
+            context.beginPath();
+            context.arc(0,0,1,0,360,false);
+            context.lineWidth="1";
+            context.stroke();
+
+            context.beginPath();
+            context.arc(x,y,4,0,360,false);
+            context.lineWidth="8";
+            context.stroke();
+
+            context.save();
+            context.beginPath();
+            context.moveTo(100,0);
+            context.lineTo(350,0);
+            context.strokeStyle="#063";
+            context.lineWidth="5";
+            context.stroke();
+            context.restore();
+
+            context.beginPath();
+            context.fillRect(Math.sqrt(40000-y*y)+x,-10,30,20);
+            context.stroke();
+            setTimeout("dian()",10);
+
+            context.beginPath();
+            context.moveTo(x,y);
+            context.lineTo(Math.sqrt(40000-y*y)+x+2,0);
+            context.lineWidth="6";
+            context.stroke();
+
+
+            context.beginPath();
+            context.arc(0,0,90,0,360,false);
+
+            context.lineWidth="2";
+            context.stroke();
+
+
+        }
+        window.onload=draw;
+    </script>
+</head>
+<body>
+    <canvas width="1000px" height="800px" id="canvas">canvas</canvas>
+</body>
+</html>
